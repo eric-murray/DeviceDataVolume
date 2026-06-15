@@ -106,9 +106,9 @@ paths:
               $ref: "#/components/schemas/RetrieveDataVolumeRequest"
             examples:
               Successful Retrieve Response:
-                $ref: "#/components/examples/SuccessfulRetrieveResponse
+                $ref: "#/components/examples/SuccessfulRetrieveResponse"
               Successful Retrieve Response With Unknown Status Time:
-                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime
+                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime"
       responses:
         "200":
           description: Contains information about the remaining device data volume.
@@ -159,9 +159,9 @@ paths:
               $ref: "#/components/schemas/CheckDataVolumeRequest"
             examples:
               Successful Retrieve Response:
-                $ref: "#/components/examples/SuccessfulRetrieveResponse
+                $ref: "#/components/examples/SuccessfulRetrieveResponse"
               Successful Retrieve Response With Unknown Status Time:
-                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime
+                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime"
       responses:
         "200":
           description: Boolean response indicating if the remaining data volume exceeds the provided threshold
