@@ -316,12 +316,14 @@ components:
         dataVolumeCategory: "<200MiB"
     CheckRequest:
       description: Request device data volume category check with 3-legged access token
-      value: {}
+      value:
+        volumeToCheck: "<200MiB"
     CheckRequestWith2-leggedAccessToken:
       description: Request device data volume category check with 2-legged access token
       value:
         device:
           phoneNumber: "+123456789"
+        volumeToCheck: "<200MiB"
     SuccessfulCheckResponse:
       description: Successfully check the device data volume category with known status time
       value:
