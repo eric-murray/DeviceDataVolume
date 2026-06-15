@@ -317,6 +317,7 @@ components:
     CheckRequest:
       description: Request device data volume category check with 3-legged access token
       value:
+        volumeToCheck:
           value: 500
           units: "MiB"
     CheckRequestWith2-leggedAccessToken:
