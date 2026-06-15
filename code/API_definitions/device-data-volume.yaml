@@ -204,7 +204,7 @@ components:
         It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
       allOf:
         - $ref: "../common/CAMARA_common.yaml#/components/schemas/DateTime"
-        - type: object
+        - type: string
           nullable: true
 
     VolumeUnitEnum:
