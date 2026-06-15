@@ -206,12 +206,6 @@ components:
         - $ref: "../common/CAMARA_common.yaml#/components/schemas/DateTime"
         - nullable: true
 
-      #      type: string
-      #      format: date-time
-      #      maxLength: 64
-      #      example: "2018-04-05T17:31:00Z"
-      #      nullable: true
-
     VolumeUnitEnum:
       description: Enumeration of volume units, where "MiB" is 2^20 bytes and "GiB" is 2^30 bytes.
       type: string
