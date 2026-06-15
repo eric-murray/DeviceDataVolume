@@ -105,10 +105,10 @@ paths:
             schema:
               $ref: "#/components/schemas/RetrieveDataVolumeRequest"
             examples:
-              Successful Retrieve Response:
-                $ref: "#/components/examples/SuccessfulRetrieveResponse"
-              Successful Retrieve Response With Unknown Status Time:
-                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime"
+              Retrieve Request:
+                $ref: "#/components/examples/RetrieveRequest"
+              Retrieve Request With 2-legged Access Token:
+                $ref: "#/components/examples/RetrieveRequestWith2-leggedAccessToken"
       responses:
         "200":
           description: Contains information about the remaining device data volume.
@@ -158,10 +158,10 @@ paths:
             schema:
               $ref: "#/components/schemas/CheckDataVolumeRequest"
             examples:
-              Successful Retrieve Response:
-                $ref: "#/components/examples/SuccessfulRetrieveResponse"
-              Successful Retrieve Response With Unknown Status Time:
-                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime"
+              Check Request:
+                $ref: "#/components/examples/CheckRequest"
+              Retrieve Request With 2-legged Access Token:
+                $ref: "#/components/examples/CheckRequestWith2-leggedAccessToken"
       responses:
         "200":
           description: Boolean response indicating if the remaining data volume exceeds the provided threshold
@@ -289,6 +289,14 @@ components:
           $ref: "#/components/schemas/DataVolumeCategory"
 
   examples:
+    RetrieveRequest:
+      description: Request device data volume category with 3-legged access token
+      value: {}
+    RetrieveRequestWith2-leggedAccessToken:
+      description: Request device data volume category with 2-legged access token
+      value:
+        device:
+          phoneNumber: "+123456789"
     SuccessfulRetrieveResponse:
       description: Successfully retrieve the device data volume category with known status time
       value:
@@ -306,6 +314,14 @@ components:
           phoneNumber: "+123456789"
         lastStatusTime: "2024-02-20T10:41:38.657Z"
         dataVolumeCategory: "<200MiB"
+    CheckRequest:
+      description: Request device data volume category check with 3-legged access token
+      value: {}
+    CheckRequestWith2-leggedAccessToken:
+      description: Request device data volume category check with 2-legged access token
+      value:
+        device:
+          phoneNumber: "+123456789"
     SuccessfulCheckResponse:
       description: Successfully check the device data volume category with known status time
       value:
