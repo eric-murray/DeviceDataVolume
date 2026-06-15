@@ -319,7 +319,7 @@ components:
       value:
         volumeToCheck:
           value: 500
-          units: "MiB"
+          unit: "MiB"
     CheckRequestWith2-leggedAccessToken:
       description: Request device data volume category check with 2-legged access token
       value:
@@ -327,7 +327,7 @@ components:
           phoneNumber: "+123456789"
         volumeToCheck:
           value: 500
-          units: "MiB"
+          unit: "MiB"
     SuccessfulCheckResponse:
       description: Successfully check the device data volume category with known status time
       value:
