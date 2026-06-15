@@ -99,11 +99,16 @@ paths:
         - openId:
             - device-data-volume:read
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/RetrieveDataVolumeRequest"
-        required: true
+            examples:
+              Successful Retrieve Response:
+                $ref: "#/components/examples/SuccessfulRetrieveResponse
+              Successful Retrieve Response With Unknown Status Time:
+                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime
       responses:
         "200":
           description: Contains information about the remaining device data volume.
@@ -117,6 +122,8 @@ paths:
               examples:
                 Successful Response:
                   $ref: "#/components/examples/SuccessfulRetrieveResponse"
+                Successful Retrieve Response With Unknown Status Time:
+                  $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime"
                 Successful Response With Device Disambiguation:
                   $ref: "#/components/examples/SuccessfulRetrieveResponseWithDeviceDisambiguation"
         "400":
@@ -145,11 +152,16 @@ paths:
         - openId:
             - device-data-volume:read
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/CheckDataVolumeRequest"
-        required: true
+            examples:
+              Successful Retrieve Response:
+                $ref: "#/components/examples/SuccessfulRetrieveResponse
+              Successful Retrieve Response With Unknown Status Time:
+                $ref: "#/components/examples/SuccessfulRetrieveResponseWithUnknownStatusTime
       responses:
         "200":
           description: Boolean response indicating if the remaining data volume exceeds the provided threshold
@@ -163,6 +175,8 @@ paths:
               examples:
                 Successful Response:
                   $ref: "#/components/examples/SuccessfulCheckResponse"
+                Successful Check Response With Unknown Status Time:
+                  $ref: "#/components/examples/SuccessfulCheckResponseWithUnknownStatusTime"
                 Successful Response With Device Disambiguation:
                   $ref: "#/components/examples/SuccessfulCheckResponseWithDeviceDisambiguation"
         "400":
@@ -184,6 +198,15 @@ components:
       $ref: "../common/CAMARA_common.yaml#/components/securitySchemes/openId"
 
   schemas:
+    LastStatusTime:
+      description: |
+        The last time that the device roaming status was confirmed to be correct by the API provider. It might not be possible to provide the current status because, for example, the device may not be connected to any mobile network.
+        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+      allOf:
+        - $ref: "../common/CAMARA_common.yaml#/components/schemas/DateTime"
+        - type: object
+          nullable: true
+
     VolumeUnitEnum:
       description: Enumeration of volume units, where "MiB" is 2^20 bytes and "GiB" is 2^30 bytes.
       type: string
@@ -230,14 +253,17 @@ components:
     CheckDataVolumeResponse:
       description: Represents the response, if the data volume exceeds a given threshold.
       type: object
+      required:
+        - lastStatusTime
+        - thresholdExceeded
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
+        lastStatusTime:
+          $ref: "#/components/schemas/LastStatusTime"
         thresholdExceeded:
           type: boolean
           description: Indicates whether the remaining data volume exceeds the given threshold
-      required:
-        - thresholdExceeded
 
     RetrieveDataVolumeRequest:
       description: |
@@ -251,32 +277,49 @@ components:
     RetrieveDataVolumeResponse:
       description: Represents the remaining data volume of the requested device.
       type: object
+      required:
+        - lastStatusTime
+        - dataVolumeCategory
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
+        lastStatusTime:
+          $ref: "#/components/schemas/LastStatusTime"
         dataVolumeCategory:
           $ref: "#/components/schemas/DataVolumeCategory"
-      required:
-        - dataVolumeCategory
 
   examples:
     SuccessfulRetrieveResponse:
-      description: Successfully retrieve the device data volume category
+      description: Successfully retrieve the device data volume category with known status time
       value:
+        lastStatusTime: "2024-02-20T10:41:38.657Z"
+        dataVolumeCategory: "<200MiB"
+    SuccessfulRetrieveResponseWithUnknownStatusTime:
+      description: Successfully retrieve the device data volume category, but status time of that information is unknown
+      value:
+        lastStatusTime: null
         dataVolumeCategory: "<200MiB"
     SuccessfulRetrieveResponseWithDeviceDisambiguation:
       description: Successfully retrieve the device data volume category but device disambiguation is required
       value:
         device:
           phoneNumber: "+123456789"
+        lastStatusTime: "2024-02-20T10:41:38.657Z"
         dataVolumeCategory: "<200MiB"
     SuccessfulCheckResponse:
-      description: Successfully check the device data volume category
+      description: Successfully check the device data volume category with known status time
       value:
+        lastStatusTime: "2024-02-20T10:41:38.657Z"
+        thresholdExceeded: false
+    SuccessfulCheckResponseWithUnknownStatusTime:
+      description: Successfully check the device data volume category, but status time of that information is unknown
+      value:
+        lastStatusTime: null
         thresholdExceeded: false
     SuccessfulCheckResponseWithDeviceDisambiguation:
       description: Successfully check the device data volume category but device disambiguation is required
       value:
         device:
           phoneNumber: "+123456789"
+        lastStatusTime: "2024-02-20T10:41:38.657Z"
         thresholdExceeded: true
