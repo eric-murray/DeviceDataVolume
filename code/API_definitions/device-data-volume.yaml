@@ -204,8 +204,7 @@ components:
         It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
       allOf:
         - $ref: "../common/CAMARA_common.yaml#/components/schemas/DateTime"
-        - type: string
-          nullable: true
+        - nullable: true
 
     VolumeUnitEnum:
       description: Enumeration of volume units, where "MiB" is 2^20 bytes and "GiB" is 2^30 bytes.
@@ -317,13 +316,16 @@ components:
     CheckRequest:
       description: Request device data volume category check with 3-legged access token
       value:
-        volumeToCheck: "<200MiB"
+          value: 500
+          units: "MiB"
     CheckRequestWith2-leggedAccessToken:
       description: Request device data volume category check with 2-legged access token
       value:
         device:
           phoneNumber: "+123456789"
-        volumeToCheck: "<200MiB"
+        volumeToCheck:
+          value: 500
+          units: "MiB"
     SuccessfulCheckResponse:
       description: Successfully check the device data volume category with known status time
       value:
