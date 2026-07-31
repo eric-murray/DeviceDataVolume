@@ -33,6 +33,7 @@ Feature: CAMARA Device Data Volume API, vwip - Operation checkDataVolume
     And the response body complies with the OAS schema at "#/components/schemas/CheckDataVolumeResponse"
     And the remaining data volume is above the requested threshold
     And the response body property "$.thresholdExceeded" is present and has value "true"
+    And the response body property "$.lastStatusTime" is present and either has a valid date-time format for a time in the past, or is null
 
   @device_data_volume_checkDataVolume_200.02_check_threshold_not_exceeded
   Scenario: Check if the remaining data volume for a device is not above a given threshold
@@ -45,6 +46,7 @@ Feature: CAMARA Device Data Volume API, vwip - Operation checkDataVolume
     And the response body complies with the OAS schema at "#/components/schemas/CheckDataVolumeResponse"
     And the remaining data volume is below the requested threshold
     And the response body property "$.thresholdExceeded" is present and has value "false"
+    And the response body property "$.lastStatusTime" is present and either has a valid date-time format for a time in the past, or is null
 
 #################
 # Error scenarios for management of input parameter device
