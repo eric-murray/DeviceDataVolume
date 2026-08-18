@@ -71,7 +71,7 @@ info:
   x-camara-commonalities: wip
 
 externalDocs:
-  description: Project documentation at CAMARA
+  description: Product documentation at CAMARA
   url: https://github.com/camaraproject/DeviceDataVolume
 
 servers:
