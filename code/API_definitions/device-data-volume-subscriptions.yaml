@@ -870,7 +870,7 @@ components:
             sink: https://endpoint.example.com/sink
             protocol: HTTP
             types:
-          - org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
+              - org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
             config:
               subscriptionDetail: {}
               subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
