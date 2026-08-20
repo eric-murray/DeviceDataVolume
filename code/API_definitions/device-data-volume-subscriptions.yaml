@@ -397,10 +397,10 @@ components:
       discriminator:
         propertyName: "type"
         mapping:
-          org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining: "#/components/schemas/EventDataUsage50Percent"
-          org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining: "#/components/schemas/EventDataUsage25Percent"
-          org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining: "#/components/schemas/EventDataUsage10Percent"
-          org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining: "#/components/schemas/EventDataUsage00Percent"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining: "#/components/schemas/EventDataUsage50PercentRemaining"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining: "#/components/schemas/EventDataUsage25PercentRemaining"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining: "#/components/schemas/EventDataUsage10PercentRemaining"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining: "#/components/schemas/EventDataUsage00PercentRemaining"
 
     NotificationEvent:
       description: |
