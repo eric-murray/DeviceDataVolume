@@ -154,9 +154,9 @@ paths:
                       data-50-percent-remaining:
                         $ref: "#/components/examples/DATA_50_PERCENT_REMAINING"
                       data-25-percent-remaining:
-                        $ref: "#/components/examples/DATA_75_PERCENT_REMAINING"
+                        $ref: "#/components/examples/DATA_25_PERCENT_REMAINING"
                       data-10-percent-remaining:
-                        $ref: "#/components/examples/DATA_90_PERCENT_REMAINING"
+                        $ref: "#/components/examples/DATA_10_PERCENT_REMAINING"
                       data-0-percent-remaining:
                         $ref: "#/components/examples/DATA_00_PERCENT_REMAINING"
                       subscription-started:
