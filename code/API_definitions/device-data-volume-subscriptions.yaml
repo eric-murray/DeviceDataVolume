@@ -25,15 +25,15 @@ info:
     When subscribing, it is mandatory to provide the event `types` related to data volume thresholds you wish to track.
 
     The following event `types` are managed for this API:
-      - `org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent`: Event triggered when 50% of the data plan is consumed.
-      - `org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent`: Event triggered when 75% of the data plan is consumed.
-      - `org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent`: Event triggered when 90% of the data plan is consumed.
-      - `org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded`: Event triggered when the data plan is exceeded.
+      - `org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining`: Event triggered when only 50% of the data plan is remaining
+      - `org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining`: Event triggered when only 25% of the data plan is remaining
+      - `org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining`: Event triggered when only 10% of the data plan is remaining
+      - `org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining`: Event triggered when the data plan is fully consumed
 
     Note: Additionally, the following events could be send, which do not require a dedicated subscription:
-      - `org.camaraproject.device-data-volume-subscriptions.v0.subscription-started` is sent when the subscription starts.
-      - `org.camaraproject.device-data-volume-subscriptions.v0.subscription-updated` is sent when the subscription is updated.
-      - `org.camaraproject.device-data-volume-subscriptions.v0.subscription-ended` is sent when the subscription ends.
+      - `org.camaraproject.device-data-volume-subscriptions.v0.subscription-started` is sent when the subscription starts
+      - `org.camaraproject.device-data-volume-subscriptions.v0.subscription-updated` is sent when the subscription is updated
+      - `org.camaraproject.device-data-volume-subscriptions.v0.subscription-ended` is sent when the subscription ends
 
     It is used in following cases:
       - the subscription expire time (optionally set by the requester) has been reached
@@ -123,10 +123,10 @@ paths:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       security:
         - openId:
-            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent:create
-            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent:create
-            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent:create
-            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded:create
+            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining:create
+            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining:create
+            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining:create
+            - device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining:create
       requestBody:
         content:
           application/json:
@@ -151,14 +151,14 @@ paths:
                     schema:
                       $ref: "#/components/schemas/NotificationEvent"
                     examples:
-                      data-50-percent:
-                        $ref: "#/components/examples/DATA_50_PERCENT"
-                      data-75-percent:
-                        $ref: "#/components/examples/DATA_75_PERCENT"
-                      data-90-percent:
-                        $ref: "#/components/examples/DATA_90_PERCENT"
-                      data-exceeded:
-                        $ref: "#/components/examples/DATA_EXCEEDED"
+                      data-50-percent-remaining:
+                        $ref: "#/components/examples/DATA_50_PERCENT_REMAINING"
+                      data-25-percent-remaining:
+                        $ref: "#/components/examples/DATA_75_PERCENT_REMAINING"
+                      data-10-percent-remaining:
+                        $ref: "#/components/examples/DATA_90_PERCENT_REMAINING"
+                      data-0-percent-remaining:
+                        $ref: "#/components/examples/DATA_00_PERCENT_REMAINING"
                       subscription-started:
                         $ref: "#/components/examples/SUBSCRIPTION_STARTED"
                       subscription-updated:
@@ -376,10 +376,10 @@ components:
       description: |
         Event types that can be triggered for device data volume monitoring.
       enum:
-        - org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent
-        - org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent
-        - org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent
-        - org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded
+        - org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining
+        - org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining
+        - org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining
+        - org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
 
     ApiNotificationEvent:
       description: |
@@ -397,10 +397,10 @@ components:
       discriminator:
         propertyName: "type"
         mapping:
-          org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent: "#/components/schemas/EventDataUsage50Percent"
-          org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent: "#/components/schemas/EventDataUsage75Percent"
-          org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent: "#/components/schemas/EventDataUsage90Percent"
-          org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded: "#/components/schemas/EventDataUsageExceeded"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining: "#/components/schemas/EventDataUsage50Percent"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining: "#/components/schemas/EventDataUsage25Percent"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining: "#/components/schemas/EventDataUsage10Percent"
+          org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining: "#/components/schemas/EventDataUsage00Percent"
 
     NotificationEvent:
       description: |
@@ -580,8 +580,8 @@ components:
         subscriptionId:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionId"
 
-    EventDataUsage50Percent:
-      description: Event structure for data usage 50% threshold alerts
+    EventDataUsage50PercentRemaining:
+      description: Event structure for remaining data allowance below 50% threshold alerts
       allOf:
         - $ref: "#/components/schemas/ApiNotificationEvent"
         - type: object
@@ -589,8 +589,8 @@ components:
             data:
               $ref: "#/components/schemas/BasicDeviceEventData"
 
-    EventDataUsage75Percent:
-      description: Event structure for data usage 75% threshold alerts
+    EventDataUsage25PercentRemaining:
+      description: Event structure for remaining data allowance below 25% threshold alerts
       allOf:
         - $ref: "#/components/schemas/ApiNotificationEvent"
         - type: object
@@ -598,8 +598,8 @@ components:
             data:
               $ref: "#/components/schemas/BasicDeviceEventData"
 
-    EventDataUsage90Percent:
-      description: Event structure for data usage 90% threshold alerts
+    EventDataUsage10PercentRemaining:
+      description: Event structure for remaining data allowance below 10% threshold alerts
       allOf:
         - $ref: "#/components/schemas/ApiNotificationEvent"
         - type: object
@@ -607,8 +607,8 @@ components:
             data:
               $ref: "#/components/schemas/BasicDeviceEventData"
 
-    EventDataUsageExceeded:
-      description: Event structure for data usage exceeding the allocated volume
+    EventDataUsage00PercentRemaining:
+      description: Event structure for remaining data allowance below 0% threshold alerts
       allOf:
         - $ref: "#/components/schemas/ApiNotificationEvent"
         - type: object
@@ -685,12 +685,12 @@ components:
               $ref: "../common/CAMARA_event_common.yaml#/components/schemas/HTTPSettings"
 
   examples:
-    DATA_50_PERCENT:
-      description: Example of data-50-percent notification
+    DATA_50_PERCENT_REMAINING:
+      description: Example of data-50-percent-remaining notification
       value:
         id: "124007"
         source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent
+        type: org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -699,12 +699,12 @@ components:
           subscriptionId: "dv10-h556-rt89-1406"
         time: "2024-05-12T12:45:23.682Z"
 
-    DATA_75_PERCENT:
-      description: Example of data-75-percent notification
+    DATA_25_PERCENT_REMAINING:
+      description: Example of data-25-percent-remaining notification
       value:
         id: "124008"
         source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent
+        type: org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -713,12 +713,12 @@ components:
           subscriptionId: "dv10-h556-rt89-1407"
         time: "2024-05-12T14:30:23.682Z"
 
-    DATA_90_PERCENT:
-      description: Example of data-90-percent notification
+    DATA_10_PERCENT_REMAINING:
+      description: Example of data-10-percent-remaining notification
       value:
         id: "124009"
         source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent
+        type: org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -727,12 +727,12 @@ components:
           subscriptionId: "dv10-h556-rt89-1408"
         time: "2024-05-12T16:15:23.682Z"
 
-    DATA_EXCEEDED:
-      description: Example of data-exceeded notification
+    DATA_00_PERCENT_REMAINING:
+      description: Example of data-00-percent-remaining notification
       value:
         id: "124010"
         source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded
+        type: org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -794,7 +794,7 @@ components:
           method: POST
         sink: https://endpoint.example.com/sink
         types:
-          - org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent
+          - org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining
         config:
           subscriptionDetail: {}
           subscriptionExpireTime: '2023-01-17T13:18:23.682Z'
@@ -813,7 +813,7 @@ components:
           method: POST
         sink: https://endpoint.example.com/sink
         types:
-          - org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent
+          - org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining
         config:
           subscriptionDetail:
             device:
@@ -833,7 +833,7 @@ components:
         sink: https://endpoint.example.com/sink
         protocol: HTTP
         types:
-          - "org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded"
+          - org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
         config:
           subscriptionDetail: {}
           subscriptionExpireTime: "2024-08-01T14:18:23.682Z"
@@ -850,7 +850,7 @@ components:
         sink: https://endpoint.example.com/sink
         protocol: HTTP
         types:
-          - "org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded"
+          - org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
         config:
           subscriptionDetail:
             device:
@@ -870,7 +870,7 @@ components:
             sink: https://endpoint.example.com/sink
             protocol: HTTP
             types:
-              - "org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded"
+          - org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining
             config:
               subscriptionDetail: {}
               subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
