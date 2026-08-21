@@ -267,9 +267,10 @@ components:
           $ref: "#/components/schemas/LastStatusTime"
         thresholdExceeded:
           type: boolean
-          description: Indicates whether the remaining data allowance exceeds the specified threshold\
-                      - `true`: The remaining data allowance is above the specified threshold
-                      - `false`: The remaining data allowance is below the specified threshold
+          description: |
+            Indicates whether the remaining data allowance exceeds the specified threshold
+            - `true`: The remaining data allowance is above the specified threshold
+            - `false`: The remaining data allowance is below the specified threshold
 
     RetrieveDataVolumeRequest:
       description: |
