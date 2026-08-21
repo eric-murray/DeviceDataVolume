@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Device Data Volume
   description: |
-    This API offers detailed insights into the customer's data usage status, including available data volume and their current position within the volume allocation.
+    This API offers detailed insights into the end user's data usage status, either retrieving their remaining data allowance, or an indication that their remaining data allowance is above a specified threshold.
 
     # Introduction
 
