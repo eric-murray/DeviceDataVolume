@@ -6,9 +6,7 @@ info:
 
     # Introduction
 
-    API consumers are able to retrieve data usage information for a dedicated SIM card, offering estimated remaining data volume categories like <200MiB, <1GiB, <5GiB, and >=5GiB. It also allows subscription to changes in data volume status.
-
-    Additionally, a check operation is provided to determine if the remaining data volume exceeds a user-specified threshold.
+    API consumers are able to retrieve data usage information for a given mobile subscription, either retrieving the estimated remaining data allowance, or checking if the remaining data allowance is above an API consumer specified threshold.
 
     # Relevant terms and definitions
 
