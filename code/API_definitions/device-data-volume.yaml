@@ -277,13 +277,13 @@ components:
       type: object
       required:
         - lastStatusTime
-        - dataAllowance
+        - remainingDataAllowance
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
         lastStatusTime:
           $ref: "#/components/schemas/LastStatusTime"
-        dataAllowance:
+        remainingDataAllowance:
           description: The data allowance remaining
           oneOf:
             - $ref: "#/components/schemas/DataAllowance"
@@ -305,12 +305,12 @@ components:
       description: Successfully retrieve the remaining device data allowance with known status time
       value:
         lastStatusTime: "2024-02-20T10:41:38.657Z"
-        dataAllowance: "Unlimited"
+        remainingDataAllowance: "Unlimited"
     SuccessfulRetrieveResponseWithUnknownStatusTime:
       description: Successfully retrieve the remaining device data allowance, but status time of that information is unknown
       value:
         lastStatusTime: null
-        dataAllowance:
+        remainingDataAllowance:
           value: 1000
           unit: "GB"
     SuccessfulRetrieveResponseWithDeviceDisambiguation:
@@ -319,7 +319,7 @@ components:
         device:
           phoneNumber: "+123456789"
         lastStatusTime: "2024-02-20T10:41:38.657Z"
-        dataAllowance:
+        remainingDataAllowance:
           value: 200
           unit: "MB"
     CheckRequest:
