@@ -146,8 +146,8 @@ paths:
     post:
       tags:
         - Device Data Volume
-      summary: "Check if the remaining data volume is above a certain threshold"
-      description: Check if the remaining data volume for a device is above a given threshold.
+      summary: "Check if the remaining data allowance is above a specified threshold"
+      description: Check if the remaining data allowance for a specified device is above a specified threshold. If the remaining data allowance is above the threshold, then response property `thresholdExceeded` will be `true`.
       operationId: checkDataVolume
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -167,7 +167,7 @@ paths:
                 $ref: "#/components/examples/CheckRequestWith2-leggedAccessToken"
       responses:
         "200":
-          description: Boolean response indicating if the remaining data volume exceeds the provided threshold
+          description: Boolean response indicating whether the remaining data allowance exceeds the specified threshold
           headers:
             x-correlator:
               $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
@@ -229,18 +229,18 @@ components:
 
     CheckDataVolumeRequest:
       description: |
-        The request to check, if the current remaining data volume is above the requested threshold.
-        Device is not required when using a 3-legged access token, following the rules in the description.
+        The request format used to check if the current remaining data allowance is above a specified threshold.
+        The `device` property must not be provided when using a 3-legged access token, following the rules in the description above.
       type: object
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/Device"
         volumeToCheck:
           type: object
-          description: Volume threshold to check against
+          description: The data allowance threshold to check the remaining data allowance against
           properties:
             value:
-              description: Quantity of volume to check
+              description: The threshold to compare the remaining data allowance against
               type: integer
               example: 500
               format: int32
@@ -255,7 +255,7 @@ components:
         - volumeToCheck
 
     CheckDataVolumeResponse:
-      description: Represents the response, if the data volume exceeds a given threshold.
+      description: The response format when checking if the remaining data allowance exceeds a specified threshold
       type: object
       required:
         - lastStatusTime
@@ -267,7 +267,9 @@ components:
           $ref: "#/components/schemas/LastStatusTime"
         thresholdExceeded:
           type: boolean
-          description: Indicates whether the remaining data volume exceeds the given threshold
+          description: Indicates whether the remaining data allowance exceeds the specified threshold\
+                      - `true`: The remaining data allowance is above the specified threshold
+                      - `false`: The remaining data allowance is below the specified threshold
 
     RetrieveDataVolumeRequest:
       description: |
