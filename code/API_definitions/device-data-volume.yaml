@@ -2,13 +2,11 @@ openapi: 3.0.3
 info:
   title: Device Data Volume
   description: |
-    This API offers detailed insights into the customer's data usage status, including available data volume and their current position within the volume allocation.
+    This API offers detailed insights into the end user's data usage status, either retrieving their remaining data allowance, or an indication that their remaining data allowance is above a specified threshold.
 
     # Introduction
 
-    API consumers are able to retrieve data usage information for a dedicated SIM card, offering estimated remaining data volume categories like <200MiB, <1GiB, <5GiB, and >=5GiB. It also allows subscription to changes in data volume status.
-
-    Additionally, a check operation is provided to determine if the remaining data volume exceeds a user-specified threshold.
+    API consumers are able to retrieve data usage information for a given mobile subscription, either retrieving the estimated remaining data allowance, or checking if the remaining data allowance is above an API consumer specified threshold.
 
     # Relevant terms and definitions
 
@@ -22,10 +20,11 @@ info:
 
     The API exposes two endpoints/operations:
 
-    - The endpoint `POST /retrieve` allows customers to retrieve the remaining device data volume.
-    - The endpoint `POST /check` allows customers to check if the remaining data volume is above a certain threshold.
+    - The endpoint `POST /retrieve` allows the API consumer to retrieve the remaining data allowance for a specified device
+    - The endpoint `POST /check` allows the API consumer to check if the remaining data allowance for a specified device is above a certain threshold
 
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
+
     # Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
@@ -50,6 +49,7 @@ info:
     - If the subject can be identified from the access token and the optional `device` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
 
     <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
+
     # Additional CAMARA error responses
 
     The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
@@ -60,6 +60,7 @@ info:
     <!-- CAMARA:MANDATORY:additional-error-responses:END -->
 
     <!-- CAMARA:MANDATORY:request-body-strictness:BEGIN -->
+
     # Request body strictness
 
     This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
@@ -71,7 +72,7 @@ info:
   x-camara-commonalities: wip
 
 externalDocs:
-  description: Project documentation at CAMARA
+  description: Product documentation at CAMARA
   url: https://github.com/camaraproject/DeviceDataVolume
 
 servers:
@@ -143,8 +144,8 @@ paths:
     post:
       tags:
         - Device Data Volume
-      summary: "Check if the remaining data volume is above a certain threshold"
-      description: Check if the remaining data volume for a device is above a given threshold.
+      summary: "Check if the remaining data allowance is above a specified threshold"
+      description: Check if the remaining data allowance for a specified device is above a specified threshold. If the remaining data allowance is above the threshold, then response property `thresholdExceeded` will be `true`.
       operationId: checkDataVolume
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -164,7 +165,7 @@ paths:
                 $ref: "#/components/examples/CheckRequestWith2-leggedAccessToken"
       responses:
         "200":
-          description: Boolean response indicating if the remaining data volume exceeds the provided threshold
+          description: Boolean response indicating whether the remaining data allowance exceeds the specified threshold
           headers:
             x-correlator:
               $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
@@ -226,18 +227,18 @@ components:
 
     CheckDataVolumeRequest:
       description: |
-        The request to check, if the current remaining data volume is above the requested threshold.
-        Device is not required when using a 3-legged access token, following the rules in the description.
+        The request format used to check if the current remaining data allowance is above a specified threshold.
+        The `device` property must not be provided when using a 3-legged access token, following the rules in the description above.
       type: object
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/Device"
         volumeToCheck:
           type: object
-          description: Volume threshold to check against
+          description: The data allowance threshold to check the remaining data allowance against
           properties:
             value:
-              description: Quantity of volume to check
+              description: The threshold to compare the remaining data allowance against
               type: integer
               example: 500
               format: int32
@@ -252,7 +253,7 @@ components:
         - volumeToCheck
 
     CheckDataVolumeResponse:
-      description: Represents the response, if the data volume exceeds a given threshold.
+      description: The response format when checking if the remaining data allowance exceeds a specified threshold
       type: object
       required:
         - lastStatusTime
@@ -264,7 +265,10 @@ components:
           $ref: "#/components/schemas/LastStatusTime"
         thresholdExceeded:
           type: boolean
-          description: Indicates whether the remaining data volume exceeds the given threshold
+          description: |
+            Indicates whether the remaining data allowance exceeds the specified threshold
+            - `true`: The remaining data allowance is above the specified threshold
+            - `false`: The remaining data allowance is below the specified threshold
 
     RetrieveDataVolumeRequest:
       description: |

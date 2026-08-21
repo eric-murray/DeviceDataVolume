@@ -1,4 +1,5 @@
-Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
+# device-data-volume-subscriptions
+Feature: Device Data Volume Subscriptions API, vwip - Operations createDeviceDataVolumeSubscription, retrieveDeviceDataVolumeSubscription, deleteDeviceDataVolumeSubscription
 
   # Input to be provided by the implementation to the tester
   #
@@ -12,6 +13,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
   #       The known device data volume status of the testing device
   #
   # References to OAS spec schemas refer to schemas specified in device-data-volume-subscriptions.yaml
+
   Background: Common Device Data Volume Subscription setup
     Given an environment at "apiRoot"
     And the resource "/device-data-volume-subscriptions/vwip/subscriptions"
@@ -117,40 +119,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the response property "$.id" is equal to "id"
     And the response property "$.config.subscriptionDetail.device" is not present
 
-  @device_data_volume_subscriptions_04_retrieve_list_2legs
-  Scenario: Check existing subscription(s) is/are retrieved in list with 2-legged-token
-    Given at least one subscription is existing for the API consumer making this request
-    And the header "Authorization" is set to a valid access token which does not identify any device
-    When the request "retrieveDeviceDataVolumeSubscriptionList" is sent
-    Then the response status code is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And the response body lists all subscriptions belonging to the API consumer
-
-  @device_data_volume_subscriptions_05_retrieve_list_3legs
-  Scenario: Check existing subscription(s) is/are retrieved in list with 3-legged-token
-    Given the API consumer has at least one active subscription for the device
-    And the header "Authorization" is set to a valid access token which identifies a valid device associated with one or more subscriptions
-    When the request "retrieveDeviceDataVolumeSubscriptionList" is sent
-    Then the response status code is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And the response body lists all subscriptions belonging to the API consumer for the identified device
-    And the response property "$.config.subscriptionDetail.device" is not present in any of the subscription records
-
-  @device_data_volume_subscriptions_06_retrieve_empty_list_3legs
-  Scenario: Check no existing subscription is retrieved in list
-    Given the API consumer has no active subscriptions for the device
-    And the header "Authorization" is set to a valid access token which identifies a valid device
-    When the request "retrieveDeviceDataVolumeSubscriptionList" is sent
-    Then the response status code is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body is an empty array
-
-  @device_data_volume_subscriptions_07_delete_subscription_based_on_an_existing_subscription-id
+  @device_data_volume_subscriptions_04_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete the subscription with subscriptionId equal to "id"
     Given the API consumer has an active subscription with "subscriptionId" equal to "id"
     When the request "deleteDeviceDataVolumeSubscription" is sent
@@ -160,7 +129,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And if the response property "$.status" is 204 then response body is not present
     And if the response property "$.status" is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync" and the response property "$.id" is equal to "id"
 
-  @device_data_volume_subscriptions_08_receive_notification_when_device_consumed_50_percent_of_the_data_plan
+  @device_data_volume_subscriptions_05_receive_notification_when_device_consumed_50_percent_of_the_data_plan
   Scenario: Receive notification for data-50-percent event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
     And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining"
@@ -172,7 +141,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
-  @device_data_volume_subscriptions_09_receive_notification_when_device_consumed_75_percent_of_the_data_plan
+  @device_data_volume_subscriptions_06_receive_notification_when_device_consumed_75_percent_of_the_data_plan
   Scenario: Receive notification for data-75-percent event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
     And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining"
@@ -184,7 +153,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
-  @device_data_volume_subscriptions_10_receive_notification_when_device_consumed_90_percent_of_the_data_plan
+  @device_data_volume_subscriptions_07_receive_notification_when_device_consumed_90_percent_of_the_data_plan
   Scenario: Receive notification for data-90-percent event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
     And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining"
@@ -196,7 +165,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
-  @device_data_volume_subscriptions_11_receive_notification_when_the_data_plan_is_exceeded
+  @device_data_volume_subscriptions_08_receive_notification_when_the_data_plan_is_exceeded
   Scenario: Receive notification for data-exceeded event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
     And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining"
@@ -208,7 +177,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
-  @device_data_volume_subscriptions_12_subscription_expiry
+  @device_data_volume_subscriptions_09_subscription_expiry
   Scenario: Receive notification for subscription-ended event on expiry
     Given a valid subscription for a device exists with "subscriptionId" equal to "id"
     And the subscription property "$.subscriptionExpireTime" is set to a value in the near future
@@ -220,7 +189,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the notification property "$.data.subscriptionId" is equal to "id"
     And the notification property "$.data.terminationReason" is equal to "SUBSCRIPTION_EXPIRED"
 
-  @device_data_volume_subscriptions_13_subscription_end_when_max_events
+  @device_data_volume_subscriptions_10_subscription_end_when_max_events
   Scenario: Receive notification for subscription-ended event on max events reached
     Given a valid subscription for a device exists with "subscriptionId" equal to "id"
     And the subscription property "$.subscriptionMaxEvents" is set to 1
@@ -232,7 +201,7 @@ Feature: Device Data Volume Subscriptions API, vwip - Operation on subscriptions
     And the notification property "$.data.subscriptionId" is equal to "id"
     And the notification request property "$.data.terminationReason" is equal to "MAX_EVENTS_REACHED"
 
-  @device_data_volume_subscriptions_14_subscription_delete_event_validation
+  @device_data_volume_subscriptions_11_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ended event on deletion
     Given a valid subscription for a device exists with "subscriptionId" equal to "id"
     And the subscription property "$.sink" is a valid callback URL
