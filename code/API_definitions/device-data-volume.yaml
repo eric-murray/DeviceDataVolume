@@ -208,13 +208,6 @@ components:
       nullable: true
       example: "2018-04-05T17:31:00Z"
 
-    DataAllowanceUnit:
-      description: The units used to express the data allowance, where "MB" is 10^6 bytes and "GB" is 10^9 bytes. Note that these definitions may be different to the definitions used by the mobile network operator for data allowances, but the API consumer will perform any required unit conversion.
-      type: string
-      enum:
-        - MB
-        - GB
-
     DataAllowance:
       description: The size of the data allowance, expressed as a quantity of data allowance units
       type: object
@@ -290,7 +283,8 @@ components:
           oneOf:
             - $ref: "#/components/schemas/DataAllowance"
             - type: string
-              enum: "Unlimited"
+              enum:
+                - Unlimited
 
   examples:
     RetrieveRequest:
