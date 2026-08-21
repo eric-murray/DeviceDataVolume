@@ -242,7 +242,7 @@ components:
         dataAllowanceThreshold:
           description: The data allowance threshold to check against
           allOf:
-            - $ref: #/components/schemas/DataAllowance
+            - $ref: "#/components/schemas/DataAllowance"
 
     CheckDataVolumeResponse:
       description: Represents the response, if the data volume exceeds a given threshold.
@@ -280,9 +280,11 @@ components:
         lastStatusTime:
           $ref: "#/components/schemas/LastStatusTime"
         dataAllowance:
+          description: The data allowance remaining
           oneOf:
             - $ref: "#/components/schemas/DataAllowance"
             - type: string
+              description: Possible data allowance values not expressed as specific values
               enum:
                 - Unlimited
 
@@ -299,14 +301,14 @@ components:
       description: Successfully retrieve the remaining device data allowance with known status time
       value:
         lastStatusTime: "2024-02-20T10:41:38.657Z"
-        dataAllowance: Unlimited
+        dataAllowance: "Unlimited"
     SuccessfulRetrieveResponseWithUnknownStatusTime:
       description: Successfully retrieve the remaining device data allowance, but status time of that information is unknown
       value:
         lastStatusTime: null
         dataAllowance:
           value: 1000
-          unit: GB
+          unit: "GB"
     SuccessfulRetrieveResponseWithDeviceDisambiguation:
       description: Successfully retrieve the remaining device data allowance, but device disambiguation is required
       value:
@@ -315,7 +317,7 @@ components:
         lastStatusTime: "2024-02-20T10:41:38.657Z"
         dataAllowance:
           value: 200
-          unit: MB
+          unit: "MB"
     CheckRequest:
       description: Request remaining device data allowance check using a 3-legged access token
       value:
