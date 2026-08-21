@@ -32,7 +32,7 @@ Feature: CAMARA Device Data Volume API, vwip - Operation retrieveDataVolume
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/RetrieveDataVolumeResponse"
-    And the response body property "$.dataVolumeCategory" is present and has value "<200MiB", "<1GiB",  "<5GiB", or ">=5GiB"
+    And the response body property "$.dataAllowance" is present and complies either with the OAS schema at "#/components/schemas/DataAllowance", or equals "Unlimited"
     And the response body property "$.lastStatusTime" is present and either has a valid date-time format for a time in the past, or is null
 
 #################
