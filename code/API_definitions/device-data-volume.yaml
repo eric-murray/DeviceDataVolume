@@ -209,48 +209,41 @@ components:
       nullable: true
       example: "2018-04-05T17:31:00Z"
 
-    VolumeUnitEnum:
-      description: Enumeration of volume units, where "MiB" is 2^20 bytes and "GiB" is 2^30 bytes.
-      type: string
-      enum:
-        - MiB
-        - GiB
-
-    DataVolumeCategory:
-      description: Estimated remaining data volume category, where "MiB" is 2^20 bytes and "GiB" is 2^30 bytes.
-      type: string
-      enum:
-        - "<200MiB"
-        - "<1GiB"
-        - "<5GiB"
-        - ">=5GiB"
+    DataAllowance:
+      description: The size of the data allowance, expressed as a quantity of data allowance units
+      type: object
+      required:
+        - value
+        - unit
+      properties:
+        value:
+          description: Quantity of the data allowance
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+          example: 500
+        unit:
+          description: The units used to express the data allowance, where "MB" is 10^6 bytes and "GB" is 10^9 bytes. Note that these definitions may be different to the definitions used by the mobile network operator for data allowances, but the API consumer will perform any required unit conversion.
+          type: string
+          enum:
+            - MB
+            - GB
 
     CheckDataVolumeRequest:
       description: |
         The request format used to check if the current remaining data allowance is above a specified threshold.
         The `device` property must not be provided when using a 3-legged access token, following the rules in the description above.
       type: object
+      required:
+        - dataAllowanceThreshold
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/Device"
-        volumeToCheck:
-          type: object
-          description: The data allowance threshold to check the remaining data allowance against
-          properties:
-            value:
-              description: The threshold to compare the remaining data allowance against
-              type: integer
-              example: 500
-              format: int32
-              minimum: 0
-              maximum: 1024
-            unit:
-              $ref: "#/components/schemas/VolumeUnitEnum"
-          required:
-            - value
-            - unit
-      required:
-        - volumeToCheck
+        dataAllowanceThreshold:
+          description: The data allowance threshold to check against
+          allOf:
+            - $ref: "#/components/schemas/DataAllowance"
 
     CheckDataVolumeResponse:
       description: The response format when checking if the remaining data allowance exceeds a specified threshold
@@ -284,67 +277,77 @@ components:
       type: object
       required:
         - lastStatusTime
-        - dataVolumeCategory
+        - remainingDataAllowance
       properties:
         device:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
         lastStatusTime:
           $ref: "#/components/schemas/LastStatusTime"
-        dataVolumeCategory:
-          $ref: "#/components/schemas/DataVolumeCategory"
+        remainingDataAllowance:
+          description: The data allowance remaining
+          oneOf:
+            - $ref: "#/components/schemas/DataAllowance"
+            - type: string
+              description: Possible data allowance values not expressed as specific values
+              enum:
+                - Unlimited
 
   examples:
     RetrieveRequest:
-      description: Request device data volume category with 3-legged access token
+      description: Request remaining device data allowance using a 3-legged access token
       value: {}
     RetrieveRequestWith2-leggedAccessToken:
-      description: Request device data volume category with 2-legged access token
+      description: Request remaining device data allowance using a 2-legged access token
       value:
         device:
           phoneNumber: "+123456789"
     SuccessfulRetrieveResponse:
-      description: Successfully retrieve the device data volume category with known status time
+      description: Successfully retrieve the remaining device data allowance with known status time
       value:
         lastStatusTime: "2024-02-20T10:41:38.657Z"
-        dataVolumeCategory: "<200MiB"
+        remainingDataAllowance: "Unlimited"
     SuccessfulRetrieveResponseWithUnknownStatusTime:
-      description: Successfully retrieve the device data volume category, but status time of that information is unknown
+      description: Successfully retrieve the remaining device data allowance, but status time of that information is unknown
       value:
         lastStatusTime: null
-        dataVolumeCategory: "<200MiB"
+        remainingDataAllowance:
+          value: 1000
+          unit: "GB"
     SuccessfulRetrieveResponseWithDeviceDisambiguation:
-      description: Successfully retrieve the device data volume category but device disambiguation is required
+      description: Successfully retrieve the remaining device data allowance, but device disambiguation is required
       value:
         device:
           phoneNumber: "+123456789"
         lastStatusTime: "2024-02-20T10:41:38.657Z"
-        dataVolumeCategory: "<200MiB"
+        remainingDataAllowance:
+          value: 200
+          unit: "MB"
     CheckRequest:
-      description: Request device data volume category check with 3-legged access token
+      description: Request remaining device data allowance check using a 3-legged access token
       value:
-        volumeToCheck:
+        dataAllowanceThreshold:
           value: 500
-          unit: "MiB"
+          unit: "MB"
     CheckRequestWith2-leggedAccessToken:
-      description: Request device data volume category check with 2-legged access token
+      description: Request remaining device data allowance check using a 2-legged access token
       value:
         device:
           phoneNumber: "+123456789"
-        volumeToCheck:
+        dataAllowanceThreshold:
           value: 500
-          unit: "MiB"
+          unit: "MB"
     SuccessfulCheckResponse:
-      description: Successfully check the device data volume category with known status time
+      description: Successfully check the remaining device data allowance with known status time
       value:
         lastStatusTime: "2024-02-20T10:41:38.657Z"
         thresholdExceeded: false
     SuccessfulCheckResponseWithUnknownStatusTime:
-      description: Successfully check the device data volume category, but status time of that information is unknown
+      description: Successfully check the remaining device data allowance, but status time of that information is unknown
       value:
         lastStatusTime: null
         thresholdExceeded: false
     SuccessfulCheckResponseWithDeviceDisambiguation:
-      description: Successfully check the device data volume category but device disambiguation is required
+      description: Successfully check the remaining device data allowance, but device disambiguation is required
       value:
         device:
           phoneNumber: "+123456789"
