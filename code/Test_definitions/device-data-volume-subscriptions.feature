@@ -41,11 +41,11 @@ Feature: Device Data Volume Subscriptions API, vwip - Operations createDeviceDat
     And the response property "$.status", if present, has the value "ACTIVATION_REQUESTED", "ACTIVE" or "INACTIVE"
 
     Examples:
-      | subscription-creation-types                                           |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded   |
+      | subscription-creation-types                                                     |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining |
 
   @device_data_volume_subscriptions_01.1_sync_creation_3legs
   Scenario Outline: Synchronous subscription creation with 3-legged-token
@@ -66,11 +66,11 @@ Feature: Device Data Volume Subscriptions API, vwip - Operations createDeviceDat
     And the response property "$.config.subscriptionDetail.device" is not present
 
     Examples:
-      | subscription-creation-types                                           |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded   |
+      | subscription-creation-types                                                     |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining |
 
   @device_data_volume_subscriptions_02_async_creation
   Scenario Outline: Asynchronous subscription creation with 2- or 3-legged access token
@@ -87,11 +87,11 @@ Feature: Device Data Volume Subscriptions API, vwip - Operations createDeviceDat
     And the response property "$.id" is present
 
     Examples:
-      | subscription-creation-types                                           |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent |
-      | org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded   |
+      | subscription-creation-types                                                     |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining |
+      | org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining |
 
   @device_data_volume_subscriptions_03.1_retrieve_by_id_2legs
   Scenario: Check existing subscription is retrieved by id with a 2-legged access token
@@ -132,49 +132,49 @@ Feature: Device Data Volume Subscriptions API, vwip - Operations createDeviceDat
   @device_data_volume_subscriptions_05_receive_notification_when_device_consumed_50_percent_of_the_data_plan
   Scenario: Receive notification for data-50-percent event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
-    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining"
     And the subscription property "$.sink" is a valid callback URL
     When the device's data volume consumed 50% of the data plan
     Then event notification "data-50-percent" is sent to the specified callback URL
     And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventDataUsage50Percent"
-    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent"
+    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
   @device_data_volume_subscriptions_06_receive_notification_when_device_consumed_75_percent_of_the_data_plan
   Scenario: Receive notification for data-75-percent event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
-    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining"
     And the subscription property "$.sink" is a valid callback URL
     When the device's data volume consumed 75% of the data plan
     Then event notification "data-75-percent" is sent to the specified callback URL
     And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventDataUsage75Percent"
-    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-75-percent"
+    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-25-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
   @device_data_volume_subscriptions_07_receive_notification_when_device_consumed_90_percent_of_the_data_plan
   Scenario: Receive notification for data-90-percent event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
-    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining"
     And the subscription property "$.sink" is a valid callback URL
     When the device's data volume consumed 90% of the data plan
     Then event notification "data-90-percent" is sent to the specified callback URL
     And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventDataUsage90Percent"
-    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-90-percent"
+    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-10-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
   @device_data_volume_subscriptions_08_receive_notification_when_the_data_plan_is_exceeded
   Scenario: Receive notification for data-exceeded event
     Given a valid subscription for that device exists with "subscriptionId" equal to "id"
-    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining"
     And the subscription property "$.sink" is a valid callback URL
     When the device's data plan is exceeded
     Then event notification "data-exceeded" is sent to the specified callback URL
     And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventDataUsage90Percent"
-    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-exceeded"
+    And the notification property "$.type" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-00-percent-remaining"
     And the notification property "$.data.subscriptionId" is equal to "id"
 
   @device_data_volume_subscriptions_09_subscription_expiry
@@ -417,9 +417,9 @@ Feature: Device Data Volume Subscriptions API, vwip - Operations createDeviceDat
   @device_data_volume_subscriptions_create_403.1_permission_denied
   Scenario: Subscription creation for org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent without having the required scope
    # To test this, a token must not have the required scope
-    Given the header "Authorization" set to an access token not including scope "device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent:create"
+    Given the header "Authorization" set to an access token not including scope "device-data-volume-subscriptions:org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining:create"
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
-    And the request body property "$.types" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent"
+    And the request body property "$.types" is equal to "org.camaraproject.device-data-volume-subscriptions.v0.data-50-percent-remaining"
     When the request "createDeviceDataVolumeSubscription" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
